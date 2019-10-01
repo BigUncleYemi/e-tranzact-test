@@ -24,7 +24,8 @@ export default class Register extends React.Component {
       validEmailCode: "",
       validPhoneNumberCode: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      errors: []
     }
 
     this.handleBack = this.handleBack.bind(this);
@@ -252,7 +253,7 @@ export default class Register extends React.Component {
   }
 
   render() {
-    const { activeStep } = this.state;
+    const { activeStep, errors } = this.state;
 
     return (
       <div className="">
@@ -287,6 +288,13 @@ export default class Register extends React.Component {
                     <div className="d-flex flex-column">
                       <section className="my-4">{this.getStepContent()}</section>
                       <div className="d-flex flex-column align-items-center">
+                        {errors.length !== 0 && 
+                          <div className="alert alert-danger">
+                            <ul>
+                              {errors.map((error, index) => <li key={`error-${index}`}>{error}</li>)}
+                            </ul>
+                          </div>
+                        }
                         <div className="d-flex justify-content-center w-75 justify-content-between">
                           <Button disabled={activeStep === 0} onClick={this.handleBack}>
                             Back

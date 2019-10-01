@@ -5,9 +5,11 @@ import {Link} from 'react-router-dom';
 function Nav() {
 
   function handleLogout(){
-    localStorage.setItem("isLoggedIn", null);
-    localStorage.setItem("isAdmin", null);
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("userId");
   }
+
   return (
     <header className="masthead mb-5 mt-4">
       <div className="d-flex justify-content-between">

@@ -70,13 +70,6 @@ class Login extends React.Component {
           </div>
           <div className="col-md-7 p-0">
             <section className="h-100 d-flex flex-column justify-content-center mx-auto col-sm-7  my-sm-5">
-              {errors.length !== 0 && 
-                <div className="alert alert-danger">
-                  <ul>
-                    {errors.map(error => <li key="error">{error}</li>)}
-                  </ul>
-                </div>
-              }
               <img src={logo} className="App-logo img-fluid px-3 d-block d-md-none" alt="logo" />
               <h3 className="text-center mb-5">Welcome Back</h3>
               <form className="form mt-3" onSubmit={this.handleFormSubmit}>
@@ -102,6 +95,13 @@ class Login extends React.Component {
                   }}
                   required
                 />
+                {errors.length !== 0 && 
+                  <div className="alert alert-danger">
+                    <ul>
+                      {errors.map((error, index) => <li key={`error-${index}`}>{error}</li>)}
+                    </ul>
+                  </div>
+                }
                 <div className="d-flex py-4 w-100  flex-column align-items-center">
                   {!isLoggingIn ? (
                     <button className="mx-auto btn btn-outline-info" type="submit"> Login </button>
