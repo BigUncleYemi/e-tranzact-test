@@ -16,19 +16,19 @@ class Dashboard extends React.Component {
       loading: true
     }
     const isAdmin = localStorage.getItem("isAdmin");
-    if (!isAdmin) this.props.history.replace("/login");
+    if (!isAdmin) this.props.history.replace("/");
   }
 
   componentDidMount() {
     const userId = localStorage.getItem("userId");
     if (!userId) {
-      this.props.history.replace("/login");
+      this.props.history.replace("/");
       return false;
     }
     // Simulate API call for details for that user id
     const user = userData.filter(user => userId === user._id);
     if (!user.length) {
-      this.props.history.replace("/login");
+      this.props.history.replace("/");
       return false;
     }
     this.setState(() => ({
@@ -38,7 +38,7 @@ class Dashboard extends React.Component {
 
     const isAdmin = localStorage.getItem("isAdmin");
     if (!isAdmin) {
-      this.props.history.replace("/login");
+      this.props.history.replace("/");
       return false;
     }
 

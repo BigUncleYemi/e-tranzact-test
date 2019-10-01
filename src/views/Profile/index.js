@@ -10,19 +10,19 @@ class Profile extends React.Component {
       loading: true
     }
     const isLoggedIn = localStorage.getItem("isLoggedIn");
-    if (!isLoggedIn) this.props.history.replace("/login");
+    if (!isLoggedIn) this.props.history.replace("/");
   }
 
   componentDidMount() {
     const userId = localStorage.getItem("userId");
     if (!userId) {
-      this.props.history.replace("/login");
+      this.props.history.replace("/");
       return false;
     }
     // Simulate API call for details for that user id
     const user = userData.filter(user => userId === user._id);
     if (!user.length) {
-      this.props.history.replace("/login");
+      this.props.history.replace("/");
       return false;
     }
     this.setState(() => ({

@@ -9,7 +9,7 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => (
       localStorage.getItem("isAdmin") ? (
         <Component {...props} />
       ) : (
-        <Redirect to={{ pathname: "/login", state: { from: props.location } }} />
+        <Redirect to={{ pathname: "/", state: { from: props.location } }} />
       )
     }
   />
