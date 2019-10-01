@@ -89,9 +89,9 @@ class Dashboard extends React.Component {
     let tableData = adminTableData.length !== 0 ? adminTableData.map(dataArray => [dataArray.firstName, dataArray.lastName, dataArray.date, dataArray.idType, dataArray.status, dataArray.reason]) : [];
     const options = {
       filter: true,
-      selectableRows: true,
+      selectableRows: "multiple",
       filterType: "dropdown",
-      responsive: "scroll",
+      responsive: "scrollMaxHeight",
       rowsPerPage: 10,
     };
     return loading

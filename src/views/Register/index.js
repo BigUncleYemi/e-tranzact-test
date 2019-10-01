@@ -6,15 +6,27 @@ import Button from '@material-ui/core/Button';
 import Input from "../../Componenets/Input";
 import { Link, Redirect } from 'react-router-dom';
 import * as logo from '../../assets/images/logo.png';
+import { userData } from '../../helpers/seed';
 
 export default class Register extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
+
     this.state = {
       activeStep: 0,
-      verifyEmail: "",
-      verifyPhoneNumber: "",
+      username: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      emailCode: "",
+      phoneNumberCode: "",
+      validEmailCode: "",
+      validPhoneNumberCode: "",
+      password: "",
+      confirmPassword: ""
     }
+
     this.handleBack = this.handleBack.bind(this);
     this.handleNext = this.handleNext.bind(this);
     this.getStepContent = this.getStepContent.bind(this);
@@ -27,14 +39,75 @@ export default class Register extends React.Component {
   }
 
   handleNext() {
-    if(this.state.activeStep === 4 ) this.props.history.push("/");
+    const { activeStep } = this.state;
+    
+    const errors = [];
+    if (activeStep === 0) {
+      const { username, firstName, lastName, email, phoneNumber } = this.state;
+
+      if (username.toLowerCase() === "administrator") {
+        errors.push(`Word "administrator" is reserved, please use a different username.`);
+      }
+      if (!username || !firstName || !lastName || !email || !phoneNumber) {
+        errors.push(`All fields are required, please fill in the empty fields.`);
+      }
+      if (errors.length){
+        this.setState(() => ({ errors }));
+        return;
+      } else {
+        this.setState(() => ({
+          validEmailCode: (Date.now().toString).slice(0, 6),
+          validPhoneNumberCode: (Date.now().toString).slice(2, 8)
+        }));
+      }
+    } else if (activeStep === 1) {
+      const { emailCode, validEmailCode } = this.state;
+      if (!emailCode) errors.push("Please enter the verification code");
+      if (emailCode && (emailCode !== validEmailCode)) errors.push("Verification code incorrect!");
+      if (errors.length){
+        this.setState(() => ({ errors }));
+        return;
+      }
+    } else if (activeStep === 2) {
+      const { phoneNumberCode, validPhoneNumberCode } = this.state;
+      if (!phoneNumberCode) errors.push("Please enter the verification code");
+      if (phoneNumberCode && (phoneNumberCode !== validPhoneNumberCode)) {
+        errors.push("Verification code incorrect!");
+      }
+      if (errors.length){
+        this.setState(() => ({ errors }));
+        return;
+      }
+    } else if (activeStep === 3) {
+      const { password, confirmPassword, username, firstName, lastName, email, phoneNumber } = this.state;
+      if (!password) errors.push("Please enter a password");
+      if (password.length < 6) errors.push("Please enter six or more characters for the password");
+      if (!confirmPassword) errors.push("Please confirm the password");
+      if ((password && confirmPassword) && (password !== confirmPassword)) {
+        errors.push("Passwords don't match");
+      }
+      if (errors.length){
+        this.setState(() => ({ errors }));
+        return;
+      }
+      userData.push({
+        firstName,
+        lastName,
+        username,
+        email,
+        password,
+        phoneNumber,
+        _id: `hpcierfcerfqme${(Date.now().toString).slice(0, 6)}`
+      });
+    }
+
     this.setState(({ activeStep }) => ({
       activeStep: activeStep + 1
     }));
   }
 
   getStepContent() {
-    const { activeStep, password, cPassword, verifyPhoneNumber, username, firstName, lastName, email, phoneNumber, verifyEmail } = this.state;
+    const { activeStep, username, firstName, lastName, email, phoneNumber } = this.state;
     switch (activeStep) {
       case 0:
         return (
@@ -46,8 +119,7 @@ export default class Register extends React.Component {
               placeholder="Username"
               onChange={e => {
                 e.persist();
-                if ("admini")
-                  this.setState(() => ({ username: e.target.value }));
+                this.setState(() => ({ username: e.target.value }));
               }}
               required
             />
@@ -98,42 +170,54 @@ export default class Register extends React.Component {
           </div>
         )
       case 1:
-        return(
-          <div className="text-center">
-            <Input
-              type="text"
-              label="Verify Email Address"
-              value={verifyEmail}
-              onChange={e => {
-                e.persist();
-                this.setState(() => ({ verifyEmail: e.target.value }));
-              }}
-              required
-            />
-          </div>
+        const { emailCode, validEmailCode } = this.state;
+        return (
+          <React.Fragment>
+            <p>(Code is {validEmailCode})</p>
+            <div>
+              <Input
+                type="text"
+                label="Email verification code (sent to email address provided)"
+                value={emailCode}
+                placeholder="Verification Code"
+                onChange={e => {
+                  e.persist();
+                  this.setState(() => ({ emailCode: e.target.value }));
+                }}
+                required
+              />
+            </div>
+          </React.Fragment>
         )
       case 2:
+        const { phoneNumberCode,validPhoneNumberCode } = this.state;
         return (
-          <div className="text-center">
-            <Input
-              type="text"
-              label="Verify Phone Number"
-              value={verifyPhoneNumber}
-              onChange={e => {
-                e.persist();
-                this.setState(() => ({ verifyPhoneNumber: e.target.value }));
-              }}
-              required
-            />
-          </div>
+          <React.Fragment>
+            <p>(Code is {validPhoneNumberCode})</p>
+            <div>
+              <Input
+                type="text"
+                label="Phone verification code (sent to phone number provided)"
+                value={phoneNumberCode}
+                placeholder="Verification Code"
+                onChange={e => {
+                  e.persist();
+                  this.setState(() => ({ phoneNumberCode: e.target.value }));
+                }}
+                required
+              />
+            </div>
+          </React.Fragment>
         )
       case 3:
+        const { password, confirmPassword } = this.state;
         return (
           <div>
             <Input
               type="password"
-              label="Password"
+              label="Choose a password"
               value={password}
+              placeholder="Password"
               onChange={e => {
                 e.persist();
                 this.setState(() => ({ password: e.target.value }));
@@ -142,11 +226,12 @@ export default class Register extends React.Component {
             />
             <Input
               type="password"
-              label="Confirm Password"
-              value={cPassword}
+              label="Confirm password"
+              value={confirmPassword}
+              placeholder="Confirm password"
               onChange={e => {
                 e.persist();
-                this.setState(() => ({ cPassword: e.target.value }));
+                this.setState(() => ({ confirmPassword: e.target.value }));
               }}
               required
             />
@@ -154,6 +239,15 @@ export default class Register extends React.Component {
         )
       default:
         return;
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { activeStep }= this.state;
+    if (activeStep === 4) {
+      setTimeout(() => {
+        this.props.history.replace("/profile");
+      }, 4000);
     }
   }
 
@@ -173,7 +267,7 @@ export default class Register extends React.Component {
             </header>
           </div>
           <div className="col-md-7 p-0">
-            <section className="h-100 d-flex flex-column justify-content-center mx-auto col-sm-7">
+            <section className="h-100 d-flex flex-column justify-content-center mx-auto col-sm-7 my-sm-5">
               <img src={logo} className="App-logo img-fluid px-3 d-block d-md-none" alt="logo" />
               <h3 className="text-center mb-2">Create an account</h3>
               <Stepper activeStep={activeStep} alternativeLabel>

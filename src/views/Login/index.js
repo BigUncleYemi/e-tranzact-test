@@ -69,7 +69,7 @@ class Login extends React.Component {
             </header>
           </div>
           <div className="col-md-7 p-0">
-            <section className="h-100 d-flex flex-column justify-content-center mx-auto col-sm-7">
+            <section className="h-100 d-flex flex-column justify-content-center mx-auto col-sm-7  my-sm-5">
               {errors.length !== 0 && 
                 <div className="alert alert-danger">
                   <ul>
