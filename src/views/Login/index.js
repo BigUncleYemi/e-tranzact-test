@@ -69,8 +69,8 @@ class Login extends React.Component {
             </header>
           </div>
           <div className="col-md-7 p-0">
-            <section className="h-100 d-flex flex-column justify-content-center mx-auto col-sm-7  my-sm-5">
-              <img src={logo} className="App-logo img-fluid px-3 d-block d-md-none" alt="logo" />
+            <section className="h-100 d-flex flex-column justify-content-center mx-auto col-sm-7">
+              <img src={logo} className="App-logo img-fluid px-3 d-block d-md-none  mt-5" alt="logo" />
               <h3 className="text-center mb-5">Welcome Back</h3>
               <form className="form mt-3" onSubmit={this.handleFormSubmit}>
                 <Input
