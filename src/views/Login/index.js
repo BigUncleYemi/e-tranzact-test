@@ -25,7 +25,7 @@ class Login extends React.Component {
     if (!emailOrUsername || !password) {
       if (!emailOrUsername) errors.push("It's compulsory you enter your email or username");
       if (!password) errors.push("It's compulsory you enter your password");
-      this.setState(() => ({ errors }));
+      this.setState(() => ({ isLoggingIn: false, errors }));
       return;
     }
 
@@ -38,8 +38,7 @@ class Login extends React.Component {
     });
     if (!isRegistered.length) {
       errors.push("Details entered not valid. Check and try again");
-      this.setState(() => ({ isLoggingIn: false }));
-      this.setState(() => ({ errors }));
+      this.setState(() => ({ isLoggingIn: false, errors }));
       return;
     }
     localStorage.setItem("userId", isRegistered[0]._id);
@@ -80,7 +79,7 @@ class Login extends React.Component {
                   placeholder="Your Email or Username"
                   onChange={e => {
                     e.persist();
-                    this.setState(() => ({ emailOrUsername: e.target.value }));
+                    this.setState(() => ({ emailOrUsername: e.target.value, errors: [] }));
                   }}
                   required
                 />
@@ -91,7 +90,7 @@ class Login extends React.Component {
                   placeholder="Your Password"
                   onChange={e => {
                     e.persist();
-                    this.setState(() => ({ password: e.target.value }));
+                    this.setState(() => ({ password: e.target.value, errors: [] }));
                   }}
                   required
                 />

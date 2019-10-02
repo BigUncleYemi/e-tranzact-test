@@ -57,8 +57,8 @@ export default class Register extends React.Component {
         return;
       } else {
         this.setState(() => ({
-          validEmailCode: (Date.now().toString).slice(0, 6),
-          validPhoneNumberCode: (Date.now().toString).slice(2, 8)
+          validEmailCode: Date.now().toString().slice(-9, -3),
+          validPhoneNumberCode: Date.now().toString().slice(-7, -1)
         }));
       }
     } else if (activeStep === 1) {
@@ -98,7 +98,7 @@ export default class Register extends React.Component {
         email,
         password,
         phoneNumber,
-        _id: `hpcierfcerfqme${(Date.now().toString).slice(0, 6)}`
+        _id: `hpc2erfc9rf83eq${Date.now().toString().slice(-6, -1)}`
       });
     }
 
@@ -120,7 +120,7 @@ export default class Register extends React.Component {
               placeholder="Username"
               onChange={e => {
                 e.persist();
-                this.setState(() => ({ username: e.target.value }));
+                this.setState(() => ({ username: e.target.value, errors: [] }));
               }}
               required
             />
@@ -131,7 +131,7 @@ export default class Register extends React.Component {
               placeholder="First Name"
               onChange={e => {
                 e.persist();
-                this.setState(() => ({ firstName: e.target.value }));
+                this.setState(() => ({ firstName: e.target.value, errors: [] }));
               }}
               required
             />
@@ -142,7 +142,7 @@ export default class Register extends React.Component {
               placeholder="Last Name"
               onChange={e => {
                 e.persist();
-                this.setState(() => ({ lastName: e.target.value }));
+                this.setState(() => ({ lastName: e.target.value, errors: [] }));
               }}
               required
             />
@@ -153,7 +153,7 @@ export default class Register extends React.Component {
               placeholder="Email Address"
               onChange={e => {
                 e.persist();
-                this.setState(() => ({ email: e.target.value }));
+                this.setState(() => ({ email: e.target.value, errors: [] }));
               }}
               required
             />
@@ -164,7 +164,7 @@ export default class Register extends React.Component {
               placeholder="Phone Number"
               onChange={e => {
                 e.persist();
-                this.setState(() => ({ phoneNumber: e.target.value }));
+                this.setState(() => ({ phoneNumber: e.target.value, errors: [] }));
               }}
               required
             />
@@ -183,7 +183,7 @@ export default class Register extends React.Component {
                 placeholder="Verification Code"
                 onChange={e => {
                   e.persist();
-                  this.setState(() => ({ emailCode: e.target.value }));
+                  this.setState(() => ({ emailCode: e.target.value, errors: [] }));
                 }}
                 required
               />
@@ -203,7 +203,7 @@ export default class Register extends React.Component {
                 placeholder="Verification Code"
                 onChange={e => {
                   e.persist();
-                  this.setState(() => ({ phoneNumberCode: e.target.value }));
+                  this.setState(() => ({ phoneNumberCode: e.target.value, errors: [] }));
                 }}
                 required
               />
@@ -221,7 +221,7 @@ export default class Register extends React.Component {
               placeholder="Password"
               onChange={e => {
                 e.persist();
-                this.setState(() => ({ password: e.target.value }));
+                this.setState(() => ({ password: e.target.value, errors: [] }));
               }}
               required
             />
@@ -232,7 +232,7 @@ export default class Register extends React.Component {
               placeholder="Confirm password"
               onChange={e => {
                 e.persist();
-                this.setState(() => ({ confirmPassword: e.target.value }));
+                this.setState(() => ({ confirmPassword: e.target.value, errors: [] }));
               }}
               required
             />
@@ -244,11 +244,11 @@ export default class Register extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { activeStep }= this.state;
+    const { activeStep } = this.state;
     if (activeStep === 4) {
       setTimeout(() => {
-        this.props.history.replace("/profile");
-      }, 4000);
+        this.props.history.replace("/");
+      }, 3000);
     }
   }
 
@@ -282,7 +282,7 @@ export default class Register extends React.Component {
                 {activeStep === 4 ? (
                   <div className="done">
                     <h1>Done!</h1>
-                    <p>Registration complete!</p>
+                    <p>Registration complete! You'll soon be redirected to log in to your new account</p>
                   </div>
                 ) : (
                     <div className="d-flex flex-column">
